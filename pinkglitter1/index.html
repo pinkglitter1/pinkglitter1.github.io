@@ -1,1 +1,105 @@
+<!doctype html><meta charset="utf-8">
+<title>@pinkglitter1</title>
+<meta name="robots" content="noindex">
+<!-- No OG/Twitter meta tags = no preview cards -->
 
+<style>
+  :root {
+    --bg:#0f0f10;
+    --fg:#f7f7f7;
+    --muted:#b7b7b7;
+    --gradient: linear-gradient(90deg, #00aff0 0%, #0077ff 100%);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    background:radial-gradient(1200px 800px at 20% 0%,#141518,#0f0f10),#0f0f10;
+    color:var(--fg);
+  }
+  .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{
+    width:100%;
+    max-width:400px;
+    background:#17181a;
+    border:1px solid #222;
+    border-radius:20px;
+    box-shadow:0 12px 40px rgba(0,0,0,.35);
+    padding:20px 16px;
+    text-align:center;
+  }
+  h1{font-size:20px;margin:0 0 14px}
+  .btn{
+    display:block;
+    width:100%;
+    padding:16px;
+    margin:10px 0;
+    border-radius:14px;
+    border:none;
+    color:#fff;
+    font-weight:600;
+    text-decoration:none;
+    cursor:pointer;
+    background:var(--gradient);
+    background-size:200% 200%;
+    transition:background-position 0.3s ease;
+  }
+  .btn:hover{background-position:100% 0;}
+  .hint{font-size:12px;color:var(--muted);margin-top:12px}
+  .tiny{font-size:11px;color:#7a7a7a;margin-top:6px}
+</style>
+
+<div class="wrap">
+  <div class="card">
+    <h1>@pinkglitter1</h1>
+    <button id="onlyfansBtn" class="btn">OnlyFans · pinkglitter1</button>
+    <div id="hint" class="hint"></div>
+    <div class="tiny">If nothing happens, tap ••• and choose “Open in Browser”, then try again.</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var YT_ID  = "dQw4w9WgXcQ"; // Rickroll video ID
+  var webURL = "https://www.youtube.com/watch?v=" + YT_ID;
+
+  var ua   = navigator.userAgent || "";
+  var isAndroid = /Android/i.test(ua);
+  var isIOS     = /iPhone|iPad|iPod/i.test(ua);
+  var isIG      = /Instagram/i.test(ua);
+  var isFBM     = /FBAN|FBAV|FB_IAB|FBAN\/Messenger|FB_IAB\/Messenger/i.test(ua);
+
+  var hintEl = document.getElementById("hint");
+  if (isIG || isFBM) {
+    hintEl.textContent = "IG may show a prompt. For instant play, open in your browser, then tap OnlyFans again.";
+  }
+
+  function openYouTubeSmart() {
+    var fallback = setTimeout(function () {
+      window.location.href = webURL;
+    }, 900);
+
+    try {
+      if (isAndroid) {
+        window.location.href = "intent://www.youtube.com/watch?v=" + YT_ID +
+                               "#Intent;scheme=https;package=com.google.android.youtube;end";
+        setTimeout(function () { window.location.href = "vnd.youtube:" + YT_ID; }, 200);
+      } else if (isIOS) {
+        window.location.href = "youtube://" + YT_ID;
+        setTimeout(function () { window.location.href = "youtube://www.youtube.com/watch?v=" + YT_ID; }, 200);
+      } else {
+        clearTimeout(fallback);
+        window.location.replace(webURL);
+      }
+    } catch (e) {
+      clearTimeout(fallback);
+      window.location.href = webURL;
+    }
+  }
+
+  document.getElementById("onlyfansBtn").addEventListener("click", openYouTubeSmart);
+})();
+</script>
+
+<noscript><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Open video</a></noscript>
