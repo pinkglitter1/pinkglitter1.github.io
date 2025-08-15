@@ -1,13 +1,10 @@
 <!doctype html><meta charset="utf-8">
 <title>@pinkglitter1</title>
-<meta name="robots" content="noindex">
-<!-- No OG/Twitter meta tags = no preview cards -->
 
 <style>
   :root {
     --bg:#0f0f10;
     --fg:#f7f7f7;
-    --muted:#b7b7b7;
     --gradient: linear-gradient(90deg, #00aff0 0%, #0077ff 100%);
   }
   *{box-sizing:border-box}
@@ -46,16 +43,12 @@
     transition:background-position 0.3s ease;
   }
   .btn:hover{background-position:100% 0;}
-  .hint{font-size:12px;color:var(--muted);margin-top:12px}
-  .tiny{font-size:11px;color:#7a7a7a;margin-top:6px}
 </style>
 
 <div class="wrap">
   <div class="card">
     <h1>@pinkglitter1</h1>
     <button id="onlyfansBtn" class="btn">OnlyFans · pinkglitter1</button>
-    <div id="hint" class="hint"></div>
-    <div class="tiny">If nothing happens, tap ••• and choose “Open in Browser”, then try again.</div>
   </div>
 </div>
 
@@ -67,13 +60,6 @@
   var ua   = navigator.userAgent || "";
   var isAndroid = /Android/i.test(ua);
   var isIOS     = /iPhone|iPad|iPod/i.test(ua);
-  var isIG      = /Instagram/i.test(ua);
-  var isFBM     = /FBAN|FBAV|FB_IAB|FBAN\/Messenger|FB_IAB\/Messenger/i.test(ua);
-
-  var hintEl = document.getElementById("hint");
-  if (isIG || isFBM) {
-    hintEl.textContent = "IG may show a prompt. For instant play, open in your browser, then tap OnlyFans again.";
-  }
 
   function openYouTubeSmart() {
     var fallback = setTimeout(function () {
