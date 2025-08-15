@@ -46,7 +46,7 @@
     margin:15px 0;
     border-radius:16px;
     border:none;
-    font-size:30px; /* Makes everything bigger, including emojis */
+    font-size:30px;
     color:#fff;
     font-weight:800;
     text-decoration:none;
@@ -55,51 +55,55 @@
     background-size:200% 200%;
     transition:background-position 0.3s ease;
   }
-  .btn:hover{
-    background-position:100% 0;
-  }
+  .btn:hover{ background-position:100% 0; }
 </style>
 
 <div class="wrap">
   <div class="card">
     <h1>OnlyFans – @pinkglitter1</h1>
-    <button id="onlyfansBtn" class="btn">(FREE) 😝😝😝</button>
+
+    <!-- Anchor with real youtube:// deep link for iOS; Android handled in JS -->
+    <a id="onlyfansBtn" class="btn" href="youtube://dQw4w9WgXcQ">(FREE) 😝😝😝</a>
   </div>
 </div>
 
 <script>
 (function () {
-  var YT_ID  = "dQw4w9WgXcQ"; // Rickroll video ID
+  var YT_ID  = "dQw4w9WgXcQ";
   var webURL = "https://www.youtube.com/watch?v=" + YT_ID;
 
   var ua   = navigator.userAgent || "";
   var isAndroid = /Android/i.test(ua);
   var isIOS     = /iPhone|iPad|iPod/i.test(ua);
 
-  function openYouTubeSmart() {
-    var fallback = setTimeout(function () {
-      window.location.href = webURL;
-    }, 900);
-
-    try {
-      if (isAndroid) {
-        window.location.href = "intent://www.youtube.com/watch?v=" + YT_ID +
-                               "#Intent;scheme=https;package=com.google.android.youtube;end";
-        setTimeout(function () { window.location.href = "vnd.youtube:" + YT_ID; }, 200);
-      } else if (isIOS) {
-        window.location.href = "youtube://" + YT_ID;
-        setTimeout(function () { window.location.href = "youtube://www.youtube.com/watch?v=" + YT_ID; }, 200);
-      } else {
+  document.getElementById("onlyfansBtn").addEventListener("click", function (e) {
+    if (isAndroid) {
+      // Android: use Intent, then scheme, then web
+      e.preventDefault();
+      var fallback = setTimeout(function () { location.href = webURL; }, 900);
+      try {
+        location.href = "intent://www.youtube.com/watch?v=" + YT_ID +
+                        "#Intent;scheme=https;package=com.google.android.youtube;end";
+        setTimeout(function(){ location.href = "vnd.youtube:" + YT_ID; }, 200);
+      } catch (_) {
         clearTimeout(fallback);
-        window.location.replace(webURL);
+        location.href = webURL;
       }
-    } catch (e) {
-      clearTimeout(fallback);
-      window.location.href = webURL;
+      return;
     }
-  }
 
-  document.getElementById("onlyfansBtn").addEventListener("click", openYouTubeSmart);
+    if (isIOS) {
+      // iOS: let the anchor's youtube:// run (real user tap helps).
+      // Start a fallback in case the app doesn't open.
+      var t = setTimeout(function(){ location.href = webURL; }, 900);
+      // If the app opens, this page loses focus and the fallback won't fire.
+      return;
+    }
+
+    // Desktop: open web directly
+    e.preventDefault();
+    location.replace(webURL);
+  });
 })();
 </script>
 
