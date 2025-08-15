@@ -1,69 +1,32 @@
 <!doctype html><meta charset="utf-8">
 <title>OnlyFans – @pinkglitter1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-  :root {
-    --bg:#0f0f10;
-    --fg:#f7f7f7;
-    --gradient: linear-gradient(90deg, #00aff0 0%, #0077ff 100%);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-    background:radial-gradient(1200px 800px at 20% 0%,#141518,#0f0f10),#0f0f10;
-    color:var(--fg);
-  }
-  .wrap{
-    min-height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:24px;
-  }
-  .card{
-    width:100%;
-    max-width:500px;
-    background:#17181a;
-    border:1px solid #222;
-    border-radius:24px;
-    box-shadow:0 12px 40px rgba(0,0,0,.35);
-    padding:30px 20px;
-    text-align:center;
-  }
-  h1{
-    font-size:28px;
-    margin:0 0 20px;
-  }
-  .btn{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    width:100%;
-    padding:28px;
-    margin:15px 0;
-    border-radius:16px;
-    border:none;
-    font-size:30px;
-    color:#fff;
-    font-weight:800;
-    text-decoration:none;
-    cursor:pointer;
-    background:var(--gradient);
-    background-size:200% 200%;
-    transition:background-position 0.3s ease;
-  }
-  .btn:hover{ background-position:100% 0; }
+  :root { --bg:#0f0f10; --fg:#f7f7f7; --gradient:linear-gradient(90deg,#00aff0 0%,#0077ff 100%); }
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+       background:radial-gradient(1200px 800px at 20% 0%,#141518,#0f0f10),#0f0f10;color:var(--fg)}
+  .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:100%;max-width:500px;background:#17181a;border:1px solid #222;border-radius:24px;
+        box-shadow:0 12px 40px rgba(0,0,0,.35);padding:30px 20px;text-align:center}
+  h1{font-size:28px;margin:0 0 20px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:28px;margin:15px 0;
+       border-radius:16px;border:none;font-size:30px;color:#fff;font-weight:800;text-decoration:none;cursor:pointer;
+       background:var(--gradient);background-size:200% 200%;transition:background-position .3s ease}
+  .btn:hover{background-position:100% 0}
 </style>
 
 <div class="wrap">
   <div class="card">
     <h1>OnlyFans – @pinkglitter1</h1>
 
-    <!-- Anchor with real youtube:// deep link for iOS; Android handled in JS -->
-    <a id="onlyfansBtn" class="btn" href="youtube://dQw4w9WgXcQ">(FREE) 😝😝😝</a>
+    <!-- Use a normal https URL so Instagram web can open it; mobile JS upgrades to app -->
+    <a id="onlyfansBtn"
+       class="btn"
+       href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+       target="_blank"
+       rel="noopener noreferrer">(FREE) 😝😝😝</a>
   </div>
 </div>
 
@@ -71,40 +34,40 @@
 (function () {
   var YT_ID  = "dQw4w9WgXcQ";
   var webURL = "https://www.youtube.com/watch?v=" + YT_ID;
-
-  var ua   = navigator.userAgent || "";
+  var ua = navigator.userAgent || "";
   var isAndroid = /Android/i.test(ua);
-  var isIOS     = /iPhone|iPad|iPod/i.test(ua);
+  var isIOS = /iPhone|iPad|iPod/i.test(ua);
 
-  document.getElementById("onlyfansBtn").addEventListener("click", function (e) {
+  var link = document.getElementById("onlyfansBtn");
+  link.addEventListener("click", function (e) {
+    // On phones, try to open the app; otherwise let the normal href open in a new tab
     if (isAndroid) {
-      // Android: use Intent, then scheme, then web
       e.preventDefault();
-      var fallback = setTimeout(function () { location.href = webURL; }, 900);
+      var fallback = setTimeout(function () { window.open(webURL, "_blank", "noopener,noreferrer"); }, 900);
       try {
         location.href = "intent://www.youtube.com/watch?v=" + YT_ID +
                         "#Intent;scheme=https;package=com.google.android.youtube;end";
         setTimeout(function(){ location.href = "vnd.youtube:" + YT_ID; }, 200);
       } catch (_) {
         clearTimeout(fallback);
-        location.href = webURL;
+        window.open(webURL, "_blank", "noopener,noreferrer");
       }
-      return;
+    } else if (isIOS) {
+      // Let Safari handle the app scheme via a user action, but still have a fallback
+      // We can't change href to scheme (IG web may strip/override), so fire scheme explicitly:
+      e.preventDefault();
+      var fallback = setTimeout(function(){ window.open(webURL, "_blank", "noopener,noreferrer"); }, 900);
+      try {
+        location.href = "youtube://" + YT_ID;
+        setTimeout(function(){ location.href = "youtube://www.youtube.com/watch?v=" + YT_ID; }, 200);
+      } catch (_) {
+        clearTimeout(fallback);
+        window.open(webURL, "_blank", "noopener,noreferrer");
+      }
     }
-
-    if (isIOS) {
-      // iOS: let the anchor's youtube:// run (real user tap helps).
-      // Start a fallback in case the app doesn't open.
-      var t = setTimeout(function(){ location.href = webURL; }, 900);
-      // If the app opens, this page loses focus and the fallback won't fire.
-      return;
-    }
-
-    // Desktop: open web directly
-    e.preventDefault();
-    location.replace(webURL);
+    // Desktop IG web: do nothing special — let the normal https href open in a new tab
   });
 })();
 </script>
 
-<noscript><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Open video</a></noscript>
+<noscript><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">Open video</a></noscript>
