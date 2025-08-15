@@ -1,5 +1,50 @@
 <!doctype html><meta charset="utf-8">
 <title></title>
 <meta name="robots" content="noindex">
-<!-- Intentionally no Open Graph/Twitter meta so no previews appear -->
-<script>location.replace("https://www.youtube.com/watch?v=dQw4w9WgXcQ");</script>
+<!-- No OG/Twitter meta tags on purpose (previews disabled) -->
+<script>
+  (function () {
+    var YT_ID = "dQw4w9WgXcQ";
+    var webURL = "https://www.youtube.com/watch?v=" + YT_ID;
+
+    var ua = navigator.userAgent || "";
+    var isAndroid = /Android/i.test(ua);
+    var isIOS     = /iPhone|iPad|iPod/i.test(ua);
+
+    // Fallback to web after a short delay (if app isn't opened)
+    var fallbackTimer = setTimeout(function () {
+      location.replace(webURL);
+    }, 800);
+
+    try {
+      if (isAndroid) {
+        // Android: try YouTube app via intent (best), then scheme
+        // 1) intent:// opens app directly if installed
+        location.href = "intent://www.youtube.com/watch?v=" + YT_ID +
+                        "#Intent;scheme=https;package=com.google.android.youtube;end";
+        // 2) backup: vnd.youtube: scheme (some devices prefer this)
+        setTimeout(function () {
+          location.href = "vnd.youtube:" + YT_ID;
+        }, 200);
+      } else if (isIOS) {
+        // iOS: YouTube app scheme
+        location.href = "youtube://" + YT_ID;          // works on many iOS versions
+        // backup a split-second later in case scheme is blocked in an in-app browser
+        setTimeout(function () {
+          location.href = "youtube://www.youtube.com/watch?v=" + YT_ID;
+        }, 200);
+      } else {
+        // Desktop → just go to the web URL
+        clearTimeout(fallbackTimer);
+        location.replace(webURL);
+      }
+    } catch (e) {
+      // If anything throws, just go to the web URL
+      clearTimeout(fallbackTimer);
+      location.replace(webURL);
+    }
+  })();
+</script>
+
+<!-- Manual fallback link (never shown as a rich preview) -->
+<noscript><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Open video</a></noscript>
